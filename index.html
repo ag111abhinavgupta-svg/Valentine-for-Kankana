@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Abhinav ❤️ Kankana</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg1:#ff9a9e;
+  --bg2:#fad0c4;
+  --card:rgba(255,255,255,.18);
+  --txt:#fff;
+}
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--txt);
+  text-align:center;
+}
+.container{max-width:900px;margin:auto;padding:40px 20px}
+.card{
+  background:var(--card);
+  border-radius:22px;
+  padding:30px;
+  margin:25px 0;
+  backdrop-filter:blur(12px);
+}
+img{max-width:100%;border-radius:20px}
+button{
+  background:#fff;
+  color:#ff4f81;
+  border:none;
+  padding:14px 26px;
+  border-radius:30px;
+  cursor:pointer;
+  font-size:1rem;
+}
+.hidden{display:none}
+
+/* lock */
+#lock{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+}
+
+/* hearts */
+.heart{
+  position:fixed;
+  bottom:-10px;
+  font-size:20px;
+  animation:float 6s linear infinite;
+}
+@keyframes float{
+  to{transform:translateY(-110vh);opacity:0}
+}
+
+/* confetti */
+.confetti{
+  position:fixed;
+  width:8px;
+  height:14px;
+  top:-10px;
+  animation:fall 3s linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg)}
+}
+</style>
+</head>
+
+<body>
+
+<div id="lock">
+  <div class="card">
+    <h2>Only for Kankana 💖</h2>
+    <p>Enter the magic word</p>
+    <input id="pass" placeholder="Hint: Who I love the most ❤️"
+      style="padding:12px;border-radius:20px;border:none;text-align:center">
+    <br><br>
+    <button onclick="unlock()">Unlock</button>
+    <p id="err"></p>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Abhinav ❤️ Kankana</h1>
+  <h2>Our little love corner</h2>
+
+  <div class="card"><p id="type"></p></div>
+
+  <div class="card">
+    <h3>One of my favourite sights 💕</h3>
+    <img src="1000274048.jpg">
+  </div>
+
+  <div class="card">
+    <h3>🎶 Our Song</h3>
+    <audio controls>
+      <source src="Odhikar.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <div class="card">
+    <h3>⏳ Us, so far</h3>
+    <p id="count">Loading…</p>
+  </div>
+
+  <div class="card">
+    <button onclick="yes()">Will you be my Valentine? 💖</button>
+    <p id="answer"></p>
+  </div>
+</div>
+
+<script>
+function unlock(){
+  const v=document.getElementById('pass').value.toLowerCase();
+  if(v==='kankana'){
+    document.getElementById('lock').style.display='none';
+  } else {
+    document.getElementById('err').textContent='That’s not right 👀';
+  }
+}
+
+const msg="Hey Kankana, I made this tiny piece of the internet just for you. Cute, warm, and full of us.";
+let i=0;
+const typeEl=document.getElementById('type');
+setInterval(()=>{
+  if(typeEl && i<msg.length){
+    typeEl.textContent+=msg.charAt(i);
+    i++;
+  }
+},35);
+
+const start=new Date('2024-10-19T00:00:00');
+setInterval(()=>{
+  const c=document.getElementById('count');
+  if(!c) return;
+  const d=new Date()-start;
+  const days=Math.floor(d/86400000);
+  const hrs=Math.floor((d%86400000)/3600000);
+  const mins=Math.floor((d%3600000)/60000);
+  c.textContent=`${days} days, ${hrs} hours, ${mins} minutes`;
+},1000);
+
+function yes(){
+  const text="Kankana, choosing you is my favourite thing. Today, tomorrow, always. ❤️";
+  let i=0;
+  const a=document.getElementById('answer');
+  a.textContent='';
+  const t=setInterval(()=>{
+    a.textContent+=text.charAt(i);
+    i++;
+    if(i>=text.length) clearInterval(t);
+  },35);
+  confetti();
+}
+
+const hearts=['💖','💕','💗','💘'];
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.style.left=Math.random()*100+'vw';
+  h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},800);
+
+function confetti(){
+  for(let i=0;i<80;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=`hsl(${Math.random()*360},100%,70%)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+</script>
+
+</body>
+</html>
