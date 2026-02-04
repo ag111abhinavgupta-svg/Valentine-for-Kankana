@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Abhinav ❤️ Kankana</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Softer romantic font -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{--bg1:#ff9a9e;--bg2:#fad0c4;--card:rgba(255,255,255,.2);--txt:#fff;}
+body{
+  margin:0;
+  font-family:'Quicksand',sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--txt);
+  text-align:center;
+  overflow-x:hidden;
+}
+h1,h2,h3{font-family:'Playfair Display',serif}
+.container{max-width:900px;margin:auto;padding:40px 20px}
+.card{background:var(--card);border-radius:22px;padding:30px;margin:25px 0;backdrop-filter:blur(14px);}
+img{max-width:100%;border-radius:20px}
+button{background:#fff;color:#ff4f81;border:none;padding:14px 26px;border-radius:30px;cursor:pointer;font-size:1rem;margin:8px;}
+footer{margin:40px 0 10px;font-size:.9rem;opacity:.85}
+
+.heartbeat{
+  font-size:48px;
+  animation:beat 2.8s infinite;
+  display:inline-block;
+}
+@keyframes beat{
+  0%{transform:scale(1)}
+  25%{transform:scale(1.15)}
+  50%{transform:scale(1)}
+  75%{transform:scale(1.1)}
+  100%{transform:scale(1)}
+}
+
+#lock,#final,#hiddenLove{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#lock{background:linear-gradient(135deg,#ff9a9e,#fad0c4);z-index:10}
+#final{background:linear-gradient(135deg,#ff9a9e,#fad0c4);z-index:20;display:none}
+#hiddenLove{background:rgba(0,0,0,.6);z-index:30;display:none}
+
+.heart{position:fixed;bottom:-10px;font-size:22px;animation:float 7s linear forwards}
+@keyframes float{to{transform:translateY(-110vh);opacity:0}}
+
+.confetti{position:fixed;width:10px;height:16px;top:-20px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(120vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <div class="card">
+    <h2>Only for Kankana! 💖</h2>
+    <p>Enter the magic word</p>
+    <input id="pass" placeholder="Hint: Who owns my heart 😌" style="padding:12px;border-radius:20px;border:none;text-align:center">
+    <br><br>
+    <button onclick="unlock()">Unlock</button>
+    <p id="err"></p>
+  </div>
+</div>
+
+<div id="final">
+  <div class="card">
+    <h2>Happy Valentine’s Day ❤️</h2>
+    <p>
+      Kankana, this little website will disappear one day…<br>
+      but what I feel for you won’t.<br><br>
+      Thank you for choosing me, again and again!
+    </p>
+    <button onclick="goBack()">Back to our little love corner 💕</button>
+    <p style="margin-top:20px;">— Abhinav</p>
+  </div>
+</div>
+
+<div id="hiddenLove">
+  <div class="card">
+    <h2>💖 I love you, Kankana 💖</h2>
+    <p>Some things are meant to be discovered slowly!</p>
+    <button onclick="closeHidden()">Close</button>
+  </div>
+</div>
+
+<div class="container" id="pressArea">
+  <h1>Abhinav <span class="heartbeat">❤️</span> Kankana</h1>
+  <h2>Our Little Love Corner</h2>
+
+  <div class="card"><p id="type"></p></div>
+
+  <div class="card">
+    <h3>One of my favourite sights 💕</h3>
+    <img src="1000274048.jpg">
+  </div>
+
+  <div class="card">
+    <h3>🎶 Our song</h3>
+    <audio id="song" controls>
+      <source src="Odhikar.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <div class="card">
+    <h3>⏳ Us, so far</h3>
+    <p id="count">Loading…</p>
+  </div>
+
+  <div class="card">
+    <h3>💌 Will you be my Valentine?</h3>
+    <button onclick="yes()">YES 😍</button>
+    <button onclick="no()">NO 🙈</button>
+    <p id="answer"></p>
+  </div>
+
+  <footer>Made with ❤️ by Abhinav</footer>
+</div>
+
+<script>
+function vibrate(p){if(navigator.vibrate)navigator.vibrate(p);}
+
+function unlock(){
+  const v=document.getElementById('pass').value.toLowerCase();
+  if(v==='kankana'){
+    document.getElementById('lock').style.display='none';
+    fadeInMusic();
+    vibrate([50,30,50]);
+  }else{
+    document.getElementById('err').textContent='That’s not right 👀';
+    vibrate(200);
+  }
+}
+
+/* Long press secret */
+let pressTimer;
+const area=document.getElementById('pressArea');
+area.addEventListener('mousedown',startPress);
+area.addEventListener('touchstart',startPress);
+area.addEventListener('mouseup',cancelPress);
+area.addEventListener('mouseleave',cancelPress);
+area.addEventListener('touchend',cancelPress);
+
+function startPress(){
+  pressTimer=setTimeout(()=>{
+    document.getElementById('hiddenLove').style.display='flex';
+    vibrate([200,100,200]);
+  },900);
+}
+function cancelPress(){clearTimeout(pressTimer);}
+function closeHidden(){document.getElementById('hiddenLove').style.display='none';}
+
+/* Typewriter */
+const msg="Hey Kankana… this little corner of the internet exists for one reason — to hold a tiny reflection of the love I carry for you every single day.";
+let ti=0;
+const typeEl=document.getElementById('type');
+setInterval(()=>{if(ti<msg.length){typeEl.textContent+=msg.charAt(ti);ti++;}},40);
+
+/* Countdown */
+const start=new Date('2024-10-19T00:00:00');
+setInterval(()=>{
+  const d=new Date()-start;
+  const days=Math.floor(d/86400000);
+  const hrs=Math.floor((d%86400000)/3600000);
+  const mins=Math.floor((d%3600000)/60000);
+  document.getElementById('count').textContent=
+  `${days} days, ${hrs} hours, ${mins} minutes`;
+},1000);
+
+/* Valentine logic */
+function yes(){
+  vibrate([100,50,100,50,200]);
+  const text="Kankana, no matter what life brings, I choose you today, tomorrow, and always. With you, everything feels right... মোৰ মৰমৰ কংকনা, মই তোমাক ভাল পাওঁ! ❤️";
+  let i=0;
+  const a=document.getElementById('answer');
+  a.textContent='';
+  const t=setInterval(()=>{
+    a.textContent+=text.charAt(i);
+    i++;
+    if(i>=text.length){
+      clearInterval(t);
+      confetti();
+      setTimeout(showFinal,3000);
+    }
+  },40);
+}
+
+function no(){
+  document.getElementById('answer').textContent="Nice try! 😜 You’re still my Valentine… 😘";
+  vibrate([100,50,100]);
+}
+
+/* Final screen */
+function showFinal(){
+  document.getElementById('final').style.display='flex';
+  vibrate([200,100,200]);
+  setTimeout(()=>{
+    document.querySelector('#final button').textContent="I’m not done smiling yet 💕";
+  },6000);
+}
+function goBack(){
+  document.getElementById('final').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* Floating hearts */
+const hearts=['💖','💕','💗','💘'];
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.style.left=Math.random()*100+'vw';
+  h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),7000);
+},900);
+
+/* Confetti */
+function confetti(){
+  for(let i=0;i<120;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=`hsl(${Math.random()*360},100%,70%)`;
+    c.style.animationDuration=2+Math.random()*2+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
+  }
+}
+
+/* Music auto fade-in */
+function fadeInMusic(){
+  const song=document.getElementById('song');
+  song.volume=0;
+  song.play().catch(()=>{});
+  let v=0;
+  const fade=setInterval(()=>{
+    if(v<0.7){v+=0.05;song.volume=v;}
+    else clearInterval(fade);
+  },300);
+}
+</script>
+</body>
+</html>
